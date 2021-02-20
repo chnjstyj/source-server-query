@@ -1,0 +1,6 @@
+MainPackage=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\起源服务器查询_1.4.17.0_ARM.appx
+SymbolPackage=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\obj\ARM\Release\Symbols\起源服务器查询_1.4.17.0_ARM.appxsym
+ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\起源服务器查询_1.4.17.0_scale-100.appx
+ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\起源服务器查询_1.4.17.0_scale-125.appx
+ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\起源服务器查询_1.4.17.0_scale-150.appx
+ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\起源服务器查询_1.4.17.0_scale-400.appx

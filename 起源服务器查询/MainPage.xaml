@@ -1,0 +1,143 @@
+﻿<Page
+    x:Class="起源服务器查询.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:起源服务器查询"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="FloralWhite" Loaded="Page_Loaded" Name="main">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <CommandBar x:Name="command"  Margin="0,0,0,0" DefaultLabelPosition="Right">
+                    <AppBarButton x:Name="add" Icon="Add" Label="添加"  AllowFocusOnInteraction="True">
+                        <AppBarButton.Flyout>
+                            <Flyout>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="添加服务器"/>
+                                    <StackPanel Orientation="Horizontal" Width="300">
+                                        <TextBox x:Name="ip" Width="150" Margin="0,0,10,0" IsReadOnly="False"/>
+                                        <TextBlock Text=":"/>
+                                        <TextBox x:Name="port" Width="100" Margin="10,0,0,0" Text="27015"/>
+                                    </StackPanel>
+                                    <Button x:Name="add_server" Content="添加" Click="add_server_Click"/>
+                                </StackPanel>
+                            </Flyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
+                    <AppBarButton  Icon="Refresh" Margin="0,0,0,0" x:Name="fresh" Label="刷新" Click="fresh_Click"/>
+                    <AppBarButton  Icon="Help" Margin="0,0,0,0" Label="关于" AllowFocusOnInteraction="True">
+                        <Button.Flyout>
+                            <Flyout>
+                                <TextBlock TextWrapping="Wrap" IsTextSelectionEnabled="True">
+                                <Span>@chnjstyj 开发</Span>
+                                <LineBreak/>
+                                <Bold>仅供交流学习</Bold>
+                                <LineBreak/>
+                                <Span>联系邮箱：woodstock@inscin.cn</Span>
+                                </TextBlock>
+                            </Flyout>
+                        </Button.Flyout>
+                    </AppBarButton>
+                    <AppBarButton  Icon="Setting" Margin="0,0,0,0" Name="setting" Label="设置" AllowFocusOnInteraction="True">
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="本机udp端口："/>
+                                        <TextBox x:Name="client_port" Margin="45,0,0,0" TextChanged="client_port_TextChanged" Text="25000"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                        <TextBlock Text="服务器最高延迟(ms)："/>
+                                        <TextBox x:Name="max_pings" TextChanged="max_pings_TextChanged" Text="500"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </AppBarButton>
+                </CommandBar>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" Margin="10,10,10,31" >
+                <GridView Name="servers" CanDragItems="True" CanReorderItems="True" AllowDrop="True">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid x:Name="connectedElement" Background="LightGray">
+                                <ScrollViewer Width="150" Height="150"
+                                      VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel Orientation="Vertical" Margin="5,0,5,0">
+                                        <TextBlock TextAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="{Binding Game}"/>
+                                        <TextBlock TextAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="{Binding Name}"/>
+                                        <TextBlock TextAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="{Binding Map}"/>
+                                        <TextBlock TextAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="{Binding Players_maxplayers}"/>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Name="server" Orientation="Horizontal" RightTapped="server_RightTapped">
+                            </ItemsWrapGrid>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+            </ScrollViewer>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                    <AppBarButton Name="save_list" Icon="Save" Label="保存"  Margin="10,0,0,0" Click="save_list_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="SmokeGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed" >
+            <Grid.Background>
+                <SolidColorBrush Color="{ThemeResource SystemChromeAltHighColor}" Opacity="0.5" />
+            </Grid.Background>
+            <Grid Margin="10,10,10,10" x:Name="destinationElement" VerticalAlignment="Center" Width="400"  Height="400" BorderThickness="3" BorderBrush="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}"
+                  Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Button x:Name="back_to_main" Click="back_to_main_Click" Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+                        <SymbolIcon Symbol="Clear" />
+                    </Button>
+                    <Button Click="connect_Click" Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+                        <SymbolIcon Symbol="Remote"/>
+                    </Button>
+                    <Button Click="pinItem_Click" Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+                        <SymbolIcon Symbol="Pin"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Vertical">
+                    <StackPanel x:Name="info_panel" Height="165" >
+                        <TextBlock FontSize="20" TextAlignment="Center" x:Name="game_selected" Margin="10,10,0,0"/>
+                        <TextBlock FontSize="20" TextAlignment="Center" x:Name="name_selected" Margin="10,10,0,0"/>
+                        <TextBlock FontSize="20" TextAlignment="Center" x:Name="map_selected" Margin="10,10,0,0"/>
+                        <TextBlock FontSize="20" TextAlignment="Center" x:Name="players_selected" Margin="10,10,0,10"/>
+                    </StackPanel>
+                    <StackPanel >
+                        <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto"
+                                      Height="{Binding ElementName=info_panel,Path=Height}"
+                                      >
+                            <ListView Name="player_list" HorizontalAlignment="Center">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" Width="Auto"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </ScrollViewer>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,2 @@
+MainPackage=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\x64\Release\Upload\起源服务器查询_1.4.17.0_x64.appx
+SymbolPackage=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\x64\Release\Upload\起源服务器查询_1.4.17.0\起源服务器查询_1.4.17.0_x64.appxsym
