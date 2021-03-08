@@ -116,13 +116,16 @@
                         <SymbolIcon Symbol="Pin"/>
                     </Button>
                 </StackPanel>
-                <StackPanel Grid.Row="1" Orientation="Vertical">
-                    <StackPanel x:Name="info_panel" Height="165" >
-                        <TextBlock FontSize="20" TextAlignment="Center" x:Name="game_selected" Margin="10,10,0,0"/>
-                        <TextBlock FontSize="20" TextAlignment="Center" x:Name="name_selected" Margin="10,10,0,0"/>
-                        <TextBlock FontSize="20" TextAlignment="Center" x:Name="map_selected" Margin="10,10,0,0"/>
-                        <TextBlock FontSize="20" TextAlignment="Center" x:Name="players_selected" Margin="10,10,0,10"/>
-                    </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Vertical" Height="165">
+                    <ScrollViewer Height="165" Width="auto" 
+                                  VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="info_panel" >
+                            <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="game_selected" Margin="10,10,0,0"/>
+                            <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="name_selected" Margin="10,10,0,0"/>
+                            <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="map_selected" Margin="10,10,0,0"/>
+                            <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="players_selected" Margin="10,10,0,10"/>
+                        </StackPanel>
+                    </ScrollViewer>
                     <StackPanel >
                         <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto"
                                       Height="{Binding ElementName=info_panel,Path=Height}"
