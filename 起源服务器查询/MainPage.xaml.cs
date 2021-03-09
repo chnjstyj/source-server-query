@@ -25,6 +25,7 @@ using System.Text;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.Foundation.Metadata;
+using Windows.ApplicationModel.Core;
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
 namespace 起源服务器查询
@@ -39,7 +40,9 @@ namespace 起源服务器查询
         public MainPage()
         {
             this.InitializeComponent();
-
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            Window.Current.SetTitleBar(realTileBar);
+            //data_trans.load_();
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
@@ -51,10 +54,31 @@ namespace 起源服务器查询
             // animation.Configuration = new BasicConnectedAnimationConfiguration();
         }
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (server server in data_trans.server_list)
+            {
+                server.connect_server();
+            }
+            servers.ItemsSource = data_trans.server_list;
+        }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.RegisterBackgroundTask();
+            if (e.Parameter is List<string>)
+            {
+                List<string> info = (e.Parameter as List<string>);
+                if (info.Count != 0)
+                {
+                    server new_server = new server();
+                    new_server.ip = IPAddress.Parse(info[0]);
+                    new_server.port = info[1];
+                    new_server.connect_server();
+                    data_trans.server_list.Add(new_server);
+                    ip.Text = "";
+                }
+            }
         }
 
         private async void RegisterBackgroundTask()
@@ -81,9 +105,11 @@ namespace 起源服务器查询
 
         private const string taskName = "server_qurey";
         private const string taskEntryPoint = "Background.server_qurey";
-
+        
         private void add_server_Click(object sender, RoutedEventArgs e)
         {
+            this.Frame.Navigate(typeof(query_server_list),ip.Text);
+            /*
             if (ip.Text != "" && port.Text != "")
             {
                 server new_server = new server();
@@ -92,7 +118,7 @@ namespace 起源服务器查询
                 new_server.connect_server();
                 data_trans.server_list.Add(new_server);
                 ip.Text = "";
-            }
+            }*/
         }
 
         private void fresh_Click(object sender, RoutedEventArgs e)
@@ -124,16 +150,6 @@ namespace 起源服务器查询
             if (servers.SelectedItem != null)
                 data_trans.server_list.Remove(
                 (servers.SelectedItem as server));
-        }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            data_trans.load_();
-            foreach (server server in data_trans.server_list)
-            {
-                server.connect_server();
-            }
-            servers.ItemsSource = data_trans.server_list;
         }
 
         private void client_port_TextChanged(object sender, TextChangedEventArgs e)
@@ -180,6 +196,8 @@ namespace 起源服务器查询
                 name_selected.Text = _storedItem.Name.TrimEnd('\0');
                 map_selected.Text = _storedItem.Map.TrimEnd('\0');
                 players_selected.Text = "Players:" + _storedItem.Players_maxplayers.TrimEnd('\0');
+                List<string> Player_list = new List<string>();
+                Player_list = _storedItem.Player_list.Select(x => x.TrimEnd('\0')).ToList<string>();
                 player_list.ItemsSource = _storedItem.Player_list;
                 animation = servers.PrepareConnectedAnimation("forwardAnimation", _storedItem, "connectedElement");
 
@@ -236,8 +254,8 @@ namespace 起源服务器查询
             if (servers.SelectedItem != null)
             {
                 var server = servers.SelectedItem as server;
-                string server_ip = server.Ip + ":" + server.Port;
-                connectAsync("steam://connect/" + server_ip);
+                string server_ip_port = server.Ip + ":" + server.Port;
+                connectAsync("steam://connect/" + server_ip_port);
             }
         }
         private async void connectAsync(string path)
@@ -298,6 +316,11 @@ namespace 起源服务器查询
             data_trans.save_();
             DisplaysaveDialog();
         }
+        /*
+        private void add_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(query_server_list));
+        }*/
     }
     public class data_trans
     {

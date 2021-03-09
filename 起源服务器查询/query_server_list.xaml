@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="起源服务器查询.query_server_list"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:起源服务器查询"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlChromeMediumLowAcrylicWindowMediumBrush}"> 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1" Name="realTileBar" 
+                  Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"/>
+            <CommandBar Grid.Row="0" 
+                        Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
+                <CommandBar.Content>
+                    <Button Grid.Column="0"  Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"
+                            x:Name="back_to_main" Click="back_to_main_Click" Width="Auto" Height="auto" >
+                        <SymbolIcon Symbol="Back"/>
+                    </Button>
+                </CommandBar.Content>
+            </CommandBar>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <ScrollViewer Margin="0,0,0,0">
+                <ListView Name="server_list"
+                          SelectionChanged="server_list_SelectionChanged" 
+                          SelectionMode="Single" IsItemClickEnabled="False"
+                          Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding gamedir}"
+                                       Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="{Binding addr}"
+                                       Style="{ThemeResource BodyTextBlockStyle}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <StackPanel Margin="20,20,20,20" >
+                    <TextBlock Name="game" />
+                    <TextBlock Name="name" />
+                    <TextBlock Name="map" />
+                    <TextBlock Name="players" />
+                </StackPanel>
+                <StackPanel>
+                    <AppBarButton Name="add_button" Icon="Add" Label="添加" Visibility="Collapsed"
+                                  Click="add_button_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

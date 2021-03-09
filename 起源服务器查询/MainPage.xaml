@@ -6,68 +6,80 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="FloralWhite" Loaded="Page_Loaded" Name="main">
+    Background="{ThemeResource SystemControlChromeMediumLowAcrylicWindowMediumBrush}" 
+    Loaded="Page_Loaded" Name="main">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="6*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <StackPanel>
-                <CommandBar x:Name="command"  Margin="0,0,0,0" DefaultLabelPosition="Right">
-                    <AppBarButton x:Name="add" Icon="Add" Label="添加"  AllowFocusOnInteraction="True">
-                        <AppBarButton.Flyout>
-                            <Flyout>
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="添加服务器"/>
-                                    <StackPanel Orientation="Horizontal" Width="300">
-                                        <TextBox x:Name="ip" Width="150" Margin="0,0,10,0" IsReadOnly="False"/>
-                                        <TextBlock Text=":"/>
-                                        <TextBox x:Name="port" Width="100" Margin="10,0,0,0" Text="27015"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel x:Name="realTileBar" Grid.Column="1" Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}">
+                    
+                </StackPanel>
+                <StackPanel Grid.Column="0">
+                    <CommandBar x:Name="command"  Margin="0,0,0,0" 
+                                 Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}" 
+                                DefaultLabelPosition="Right">
+                        <AppBarButton x:Name="add" Icon="Add" Label="添加"  AllowFocusOnInteraction="True">
+                            <AppBarButton.Flyout>
+                                <Flyout>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="服务器IP"/>
+                                        <StackPanel Orientation="Horizontal" Width="300">
+                                            <TextBox Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}" 
+                                                     x:Name="ip" Width="150" Margin="0,0,50,0" IsReadOnly="False"/>
+                                            <Button Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}" 
+                                                    x:Name="add_server" Content="查询服务器" Click="add_server_Click"/>
+                                        </StackPanel>
                                     </StackPanel>
-                                    <Button x:Name="add_server" Content="添加" Click="add_server_Click"/>
-                                </StackPanel>
-                            </Flyout>
-                        </AppBarButton.Flyout>
-                    </AppBarButton>
-                    <AppBarButton  Icon="Refresh" Margin="0,0,0,0" x:Name="fresh" Label="刷新" Click="fresh_Click"/>
-                    <AppBarButton  Icon="Help" Margin="0,0,0,0" Label="关于" AllowFocusOnInteraction="True">
-                        <Button.Flyout>
-                            <Flyout>
-                                <TextBlock TextWrapping="Wrap" IsTextSelectionEnabled="True">
-                                <Span>@chnjstyj 开发</Span>
-                                <LineBreak/>
-                                <Bold>仅供交流学习</Bold>
-                                <LineBreak/>
-                                <Span>联系邮箱：woodstock@inscin.cn</Span>
-                                </TextBlock>
-                            </Flyout>
-                        </Button.Flyout>
-                    </AppBarButton>
-                    <AppBarButton  Icon="Setting" Margin="0,0,0,0" Name="setting" Label="设置" AllowFocusOnInteraction="True">
-                        <Button.Flyout>
-                            <Flyout>
-                                <StackPanel Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="本机udp端口："/>
-                                        <TextBox x:Name="client_port" Margin="45,0,0,0" TextChanged="client_port_TextChanged" Text="25000"/>
+                                </Flyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                        <AppBarButton  Icon="Refresh" Margin="0,0,0,0" x:Name="fresh" Label="刷新" Click="fresh_Click"/>
+                        <AppBarButton  Icon="Help" Margin="0,0,0,0" Label="关于" AllowFocusOnInteraction="True">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <TextBlock TextWrapping="Wrap" IsTextSelectionEnabled="True">
+                                    <Span>@chnjstyj 开发</Span>
+                                    <LineBreak/>
+                                    <Bold>仅供交流学习</Bold>
+                                    <LineBreak/>
+                                    <Span>联系邮箱：woodstock@inscin.cn</Span>
+                                    </TextBlock>
+                                </Flyout>
+                            </Button.Flyout>
+                        </AppBarButton>
+                        <AppBarButton  Icon="Setting" Margin="0,0,0,0" Name="setting" Label="设置" AllowFocusOnInteraction="True">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="本机udp端口："/>
+                                            <TextBox x:Name="client_port" Margin="45,0,0,0" TextChanged="client_port_TextChanged" Text="25000"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                            <TextBlock Text="服务器最高延迟(ms)："/>
+                                            <TextBox x:Name="max_pings" TextChanged="max_pings_TextChanged" Text="500"/>
+                                        </StackPanel>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                        <TextBlock Text="服务器最高延迟(ms)："/>
-                                        <TextBox x:Name="max_pings" TextChanged="max_pings_TextChanged" Text="500"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Flyout>
-                        </Button.Flyout>
-                    </AppBarButton>
-                </CommandBar>
-            </StackPanel>
-            <ScrollViewer Grid.Row="1" Margin="10,10,10,31" >
+                                </Flyout>
+                            </Button.Flyout>
+                        </AppBarButton>
+                    </CommandBar>
+                </StackPanel>
+            </Grid>
+        <ScrollViewer Grid.Row="1" Margin="10,10,10,31" >
                 <GridView Name="servers" CanDragItems="True" CanReorderItems="True" AllowDrop="True">
                     <GridView.ItemTemplate>
                         <DataTemplate>
-                            <Grid x:Name="connectedElement" Background="LightGray">
+                            <Grid x:Name="connectedElement" Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
                                 <ScrollViewer Width="150" Height="150"
                                       VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
                                     <StackPanel Orientation="Vertical" Margin="5,0,5,0">
@@ -88,49 +100,56 @@
                     </GridView.ItemsPanel>
                 </GridView>
             </ScrollViewer>
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center">
-                    <AppBarButton Name="save_list" Icon="Save" Label="保存"  Margin="10,0,0,0" Click="save_list_Click"/>
+            <RelativePanel Grid.Row="2">
+                <StackPanel RelativePanel.AlignRightWithPanel="True" Orientation="Horizontal" VerticalAlignment="Center">
+                    <AppBarButton Name="save_list" Icon="Save" Label="保存"  Margin="0,0,10,0" Click="save_list_Click"/>
                 </StackPanel>
-            </StackPanel>
+            </RelativePanel>
         </Grid>
 
         <Grid x:Name="SmokeGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed" >
             <Grid.Background>
                 <SolidColorBrush Color="{ThemeResource SystemChromeAltHighColor}" Opacity="0.5" />
             </Grid.Background>
-            <Grid Margin="10,10,10,10" x:Name="destinationElement" VerticalAlignment="Center" Width="400"  Height="400" BorderThickness="3" BorderBrush="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}"
-                  Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}" >
+            <Grid Margin="10,10,10,10" x:Name="destinationElement" VerticalAlignment="Center" 
+                  Width="400"  Height="auto" BorderThickness="3" 
+                  BorderBrush="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}"
+                  Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <Button x:Name="back_to_main" Click="back_to_main_Click" Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+                    <Button x:Name="back_to_main" Click="back_to_main_Click" 
+                            Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
                         <SymbolIcon Symbol="Clear" />
                     </Button>
-                    <Button Click="connect_Click" Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+                    <Button Click="connect_Click" 
+                            Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
                         <SymbolIcon Symbol="Remote"/>
                     </Button>
-                    <Button Click="pinItem_Click" Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
+                    <Button Click="pinItem_Click" 
+                            Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
                         <SymbolIcon Symbol="Pin"/>
                     </Button>
                 </StackPanel>
-                <StackPanel Grid.Row="1" Orientation="Vertical" Height="165">
-                    <ScrollViewer Height="165" Width="auto" 
-                                  VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
-                        <StackPanel x:Name="info_panel" >
-                            <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="game_selected" Margin="10,10,0,0"/>
-                            <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="name_selected" Margin="10,10,0,0"/>
-                            <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="map_selected" Margin="10,10,0,0"/>
-                            <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="players_selected" Margin="10,10,0,10"/>
-                        </StackPanel>
-                    </ScrollViewer>
-                    <StackPanel >
-                        <ScrollViewer HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto"
-                                      Height="{Binding ElementName=info_panel,Path=Height}"
-                                      >
-                            <ListView Name="player_list" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="1" Orientation="Vertical">
+                    <Border BorderThickness="0,0,0,2" BorderBrush="Black" Margin="10,0,10,10">
+                        <ScrollViewer VerticalScrollMode="Enabled" 
+                                      VerticalScrollBarVisibility="Auto">
+                            <StackPanel x:Name="info_panel">
+                                <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="game_selected" Margin="10,10,0,0"/>
+                                <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="name_selected" Margin="10,10,0,0"/>
+                                <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="map_selected" Margin="10,10,0,0"/>
+                                <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWholeWords" x:Name="players_selected" Margin="10,10,0,10"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                    <StackPanel>
+                        <ScrollViewer Height="200"
+                            HorizontalScrollMode="Auto" 
+                                      HorizontalScrollBarVisibility="Auto">
+                            <ListView Name="player_list" HorizontalAlignment="Center" >
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding}" Width="Auto"/>

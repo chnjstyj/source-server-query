@@ -161,7 +161,7 @@ namespace 起源服务器查询
                 player_list.Clear();
             }
         }
-        public void connect_server()
+        public bool connect_server()
         {
             try
             {
@@ -182,6 +182,7 @@ namespace 起源服务器查询
                 Request_response = udp.Receive(ref RemoteIpEndPoint);
                 player_list_update(Request_response);*/
                 udp.Close();
+                return true;
             }
             catch (System.Net.Sockets.SocketException)
             {
@@ -192,6 +193,7 @@ namespace 起源服务器查询
                 this.players = 0;
                 this.maxplayers = 0;
                 this.players_maxplayers = "";
+                return false;
             }
         }
         private byte[] update_challenge_number(byte[] received_info)

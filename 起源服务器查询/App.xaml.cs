@@ -5,8 +5,10 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -41,13 +43,14 @@ namespace 起源服务器查询
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             ApplicationView.GetForCurrentView().SetPreferredMinSize(
-    new Size { Width = 483, Height = 500 });
+                new Size { Width = 483, Height = 500 });
             Frame rootFrame = Window.Current.Content as Frame;
             var ip_port = e.Arguments;
             if (ip_port != "")
             {
                 Windows.System.Launcher.LaunchUriAsync(new Uri("steam://connect/" + ip_port));
             }
+            data_trans.load_();
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态
             if (rootFrame == null)
@@ -77,7 +80,20 @@ namespace 起源服务器查询
                 }
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();
+
+                ExtendAcrylicIntoTitleBar();
             }
+        }
+
+        /// <summary>
+        /// 修改标题栏颜色
+        /// </summary>
+        private void ExtendAcrylicIntoTitleBar()
+        {
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
         }
 
         /// <summary>
