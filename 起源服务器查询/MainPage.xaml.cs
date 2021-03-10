@@ -26,6 +26,7 @@ using Windows.ApplicationModel.Background;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.Foundation.Metadata;
 using Windows.ApplicationModel.Core;
+using System.Threading;
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
 namespace 起源服务器查询
@@ -56,14 +57,16 @@ namespace 起源服务器查询
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            servers.ItemsSource = data_trans.server_list;
+            data_trans.load_();
+            /*
             foreach (server server in data_trans.server_list)
             {
-                server.connect_server();
-            }
-            servers.ItemsSource = data_trans.server_list;
+                await server.connect_server();   //这里要等待每个udp完成连接 否则每个list中的server都会同时占据一个udp端口
+            }*/
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.RegisterBackgroundTask();
             if (e.Parameter is List<string>)
@@ -74,7 +77,7 @@ namespace 起源服务器查询
                     server new_server = new server();
                     new_server.ip = IPAddress.Parse(info[0]);
                     new_server.port = info[1];
-                    new_server.connect_server();
+                    await new_server.connect_server();
                     data_trans.server_list.Add(new_server);
                     ip.Text = "";
                 }
@@ -109,23 +112,18 @@ namespace 起源服务器查询
         private void add_server_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(query_server_list),ip.Text);
-            /*
-            if (ip.Text != "" && port.Text != "")
-            {
-                server new_server = new server();
-                new_server.ip = IPAddress.Parse(ip.Text);
-                new_server.port = port.Text;
-                new_server.connect_server();
-                data_trans.server_list.Add(new_server);
-                ip.Text = "";
-            }*/
         }
 
         private void fresh_Click(object sender, RoutedEventArgs e)
         {
+            refresh_server();
+        }
+
+        private async static void refresh_server()
+        {
             foreach (server server in data_trans.server_list)
             {
-                server.connect_server();
+                await server.connect_server();
                 string game = server.Game.TrimEnd('\0');
                 string name = server.Name.TrimEnd('\0');
                 string map = server.Map.TrimEnd('\0');
@@ -191,7 +189,7 @@ namespace 起源服务器查询
             {
                 ConnectedAnimation animation = null;
                 _storedItem = servers.SelectedItem as server;
-                _storedItem.update_player_list();
+                _storedItem.update_player_list();    //
                 game_selected.Text = _storedItem.Game.TrimEnd('\0');
                 name_selected.Text = _storedItem.Name.TrimEnd('\0');
                 map_selected.Text = _storedItem.Map.TrimEnd('\0');
@@ -350,7 +348,8 @@ namespace 起源服务器查询
                 maxserverId++;
             }
         }
-        public static void load_()
+        //在App.xaml.cs中调用 
+        public async static void load_()
         {
             Realm realmDB;
             realmDB = Realm.GetInstance("server_list.realm");
@@ -360,6 +359,7 @@ namespace 起源服务器查询
                 server new_server = new server();
                 new_server.Ip = server_saved.Ip;
                 new_server.Port = server_saved.Port;
+                await new_server.connect_server();
                 server_list.Add(new_server);
             }
         }

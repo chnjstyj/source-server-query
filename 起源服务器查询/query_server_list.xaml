@@ -34,8 +34,7 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
-            <ScrollViewer Margin="0,0,0,0">
-                <ListView Name="server_list"
+            <ListView Name="server_list"
                           SelectionChanged="server_list_SelectionChanged" 
                           SelectionMode="Single" IsItemClickEnabled="False"
                           Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}">
@@ -50,18 +49,18 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </ScrollViewer>
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <StackPanel Grid.Column="1" Orientation="Vertical">
                 <StackPanel Margin="20,20,20,20" >
-                    <TextBlock Name="game" />
-                    <TextBlock Name="name" />
-                    <TextBlock Name="map" />
-                    <TextBlock Name="players" />
+                    <TextBlock Name="game" TextWrapping="WrapWholeWords"/>
+                    <TextBlock Name="name" TextWrapping="WrapWholeWords"/>
+                    <TextBlock Name="map" TextWrapping="WrapWholeWords"/>
+                    <TextBlock Name="players" TextWrapping="WrapWholeWords"/>
                 </StackPanel>
-                <StackPanel>
+                <RelativePanel>
                     <AppBarButton Name="add_button" Icon="Add" Label="添加" Visibility="Collapsed"
-                                  Click="add_button_Click" />
-                </StackPanel>
+                                  Click="add_button_Click" RelativePanel.AlignRightWithPanel="True"
+                                  Margin="0,0,20,0"/>
+                </RelativePanel>
             </StackPanel>
         </Grid>
     </Grid>

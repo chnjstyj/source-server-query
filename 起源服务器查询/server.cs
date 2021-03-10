@@ -137,9 +137,15 @@ namespace 起源服务器查询
             }
         }
 
-        public void update_player_list()
+        public async void update_player_list()
         {
             player_list.Clear();
+            Byte[] Request_response = await send_playerlist_udp();
+            if (Request_response.Length != 0)
+                player_list_update(Request_response);
+            else
+                player_list.Clear();
+            /*
             try
             {
                 udp = new UdpClient(client_port);
@@ -159,34 +165,42 @@ namespace 起源服务器查询
             {
                 udp.Close();
                 player_list.Clear();
-            }
+            }*/
         }
-        public bool connect_server()
+
+        private async Task<Byte[]> send_playerlist_udp()
         {
-            try
+            Byte[] Request_response = new Byte[0];
+            await Task.Run(() =>
             {
-                udp = new UdpClient(client_port);
-                udp.Connect(ip, int.Parse(port));
-                udp.Client.ReceiveTimeout = max_pings;
-                Byte[] Request_INFO = new Byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0x54, 0x53, 0x6F, 0x75, 0x72, 0x63, 0x65, 0x20, 0x45, 0x6E, 0x67, 0x69, 0x6E, 0x65, 0x20, 0x51, 0x75, 0x65, 0x72, 0x79, 0x00 };
-                udp.Send(Request_INFO, Request_INFO.Length);
-                IPEndPoint RemoteIpEndPoint = new IPEndPoint(ip, 0);
-                Byte[] Request_response;
-                Request_response = udp.Receive(ref RemoteIpEndPoint);
-                info_update(Request_response);
-                /*Request_INFO = new Byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0x55, 0xFF, 0xFF, 0xFF, 0xFF };
-                udp.Send(Request_INFO, Request_INFO.Length);       
-                Request_response = udp.Receive(ref RemoteIpEndPoint);
-                Request_INFO = update_challenge_number(Request_response);
-                udp.Send(Request_INFO, Request_INFO.Length);    //请求玩家名称
-                Request_response = udp.Receive(ref RemoteIpEndPoint);
-                player_list_update(Request_response);*/
-                udp.Close();
-                return true;
-            }
-            catch (System.Net.Sockets.SocketException)
+                try
+                {
+                    udp = new UdpClient(client_port);
+                    udp.Connect(ip, int.Parse(port));
+                    udp.Client.ReceiveTimeout = max_pings;
+                    IPEndPoint RemoteIpEndPoint = new IPEndPoint(ip, 0);
+                    Byte[] Request_INFO = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0x55, 0xFF, 0xFF, 0xFF, 0xFF };
+                    udp.Send(Request_INFO, Request_INFO.Length);
+                    Request_response = udp.Receive(ref RemoteIpEndPoint);
+                    Request_INFO = update_challenge_number(Request_response);
+                    udp.Send(Request_INFO, Request_INFO.Length);    //请求玩家名称
+                    Request_response = udp.Receive(ref RemoteIpEndPoint);
+                    udp.Close();
+                }
+                catch (System.Net.Sockets.SocketException)
+                {
+                    udp.Close();
+                    Request_response = new Byte[0];
+                }
+            });
+            return Request_response;
+        }
+
+        public async Task<bool> connect_server()
+        {
+            Byte[] Request_response = await send_udp();
+            if (Request_response.Length == 0)
             {
-                udp.Close();
                 this.Game = "超时！";
                 this.Name = "";
                 this.Map = "";
@@ -195,7 +209,38 @@ namespace 起源服务器查询
                 this.players_maxplayers = "";
                 return false;
             }
+            else
+            {
+                info_update(Request_response);
+                return true;
+            }
         }
+
+        private async Task<Byte[]> send_udp()
+        {
+            Byte[] Request_response = new Byte[0];
+            await Task.Run(() =>
+            {
+                try
+                {
+                    udp = new UdpClient(client_port);
+                    udp.Connect(ip, int.Parse(port));
+                    udp.Client.ReceiveTimeout = max_pings;
+                    Byte[] Request_INFO = new Byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0x54, 0x53, 0x6F, 0x75, 0x72, 0x63, 0x65, 0x20, 0x45, 0x6E, 0x67, 0x69, 0x6E, 0x65, 0x20, 0x51, 0x75, 0x65, 0x72, 0x79, 0x00 };
+                    udp.Send(Request_INFO, Request_INFO.Length);
+                    IPEndPoint RemoteIpEndPoint = new IPEndPoint(ip, 0);
+                    Request_response = udp.Receive(ref RemoteIpEndPoint);
+                    udp.Close();
+                }
+                catch (System.Net.Sockets.SocketException)
+                {
+                    udp.Close();
+                    Request_response = new Byte[0];
+                }
+            });
+            return Request_response;
+        }
+
         private byte[] update_challenge_number(byte[] received_info)
         {
             byte[] new_request_info = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0x55, 0x00, 0x00, 0x00, 0x00 };

@@ -89,14 +89,14 @@ namespace 起源服务器查询
             return false;
         }
 
-        private void server_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void server_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //game.Text += server_list.SelectedItem.GetType().ToString();
             var server = (server_list.SelectedItem as query_server.Server);
             int port_index = server.addr.IndexOf(':');
             port = server.addr.Remove(0,port_index+1);
             server select_server = new server(ip,port);
-            if (select_server.connect_server())
+            if (await select_server.connect_server())
             {
                 game.Text = select_server.Game;
                 name.Text = select_server.Name;

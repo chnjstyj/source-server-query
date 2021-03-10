@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="server.cs" />
     <Compile Include="tile.cs" />
+    <Compile Include="Windows\ApplicationModel\CoreApplication.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
