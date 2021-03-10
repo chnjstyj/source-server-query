@@ -1,6 +1,6 @@
-MainPackage=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.28.0_ARM.appx
-SymbolPackage=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.28.0\起源服务器查询_2.1.28.0_ARM.appxsym
-ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.28.0_scale-100.appx
-ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.28.0_scale-125.appx
-ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.28.0_scale-150.appx
-ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.28.0_scale-400.appx
+MainPackage=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.29.0_ARM.appx
+SymbolPackage=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.29.0\起源服务器查询_2.1.29.0_ARM.appxsym
+ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.29.0_scale-100.appx
+ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.29.0_scale-125.appx
+ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.29.0_scale-150.appx
+ResourcePack=C:\Users\Tang\Desktop\uwp test\起源服务器查询\起源服务器查询\起源服务器查询\bin\ARM\Release\Upload\起源服务器查询_2.1.29.0_scale-400.appx

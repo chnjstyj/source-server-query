@@ -68,6 +68,11 @@ namespace 起源服务器查询
             base.OnNavigatedTo(e);
             this.RegisterBackgroundTask();
 
+            servers.ItemsSource = data_trans.server_list;
+            foreach (server server in data_trans.server_list)
+            {
+                await server.connect_server();   //这里要等待每个udp完成连接 否则每个list中的server都会同时占据一个udp端口
+            }
             if (e.Parameter is List<string>)
             {
                 List<string> info = (e.Parameter as List<string>);
@@ -76,15 +81,10 @@ namespace 起源服务器查询
                     server new_server = new server();
                     new_server.ip = IPAddress.Parse(info[0]);
                     new_server.port = info[1];
-                    await new_server.connect_server();
+                    new_server.connect_server();
                     data_trans.server_list.Add(new_server);
                     ip.Text = "";
                 }
-            }
-            servers.ItemsSource = data_trans.server_list;
-            foreach (server server in data_trans.server_list)
-            {
-                await server.connect_server();   //这里要等待每个udp完成连接 否则每个list中的server都会同时占据一个udp端口
             }
         }
 
@@ -120,7 +120,9 @@ namespace 起源服务器查询
 
         private void fresh_Click(object sender, RoutedEventArgs e)
         {
+            fresh.IsEnabled = false;
             refresh_server();
+            fresh.IsEnabled = true;
         }
 
         private async static void refresh_server()

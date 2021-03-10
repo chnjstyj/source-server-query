@@ -145,27 +145,6 @@ namespace 起源服务器查询
                 player_list_update(Request_response);
             else
                 player_list.Clear();
-            /*
-            try
-            {
-                udp = new UdpClient(client_port);
-                udp.Connect(ip, int.Parse(port));
-                udp.Client.ReceiveTimeout = max_pings;
-                IPEndPoint RemoteIpEndPoint = new IPEndPoint(ip, 0);
-                Byte[] Request_INFO = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0x55, 0xFF, 0xFF, 0xFF, 0xFF };
-                udp.Send(Request_INFO, Request_INFO.Length);
-                Byte[] Request_response = Request_response = udp.Receive(ref RemoteIpEndPoint);
-                Request_INFO = update_challenge_number(Request_response);
-                udp.Send(Request_INFO, Request_INFO.Length);    //请求玩家名称
-                Request_response = udp.Receive(ref RemoteIpEndPoint);
-                player_list_update(Request_response);
-                udp.Close();
-            }
-            catch(System.Net.Sockets.SocketException)
-            {
-                udp.Close();
-                player_list.Clear();
-            }*/
         }
 
         private async Task<Byte[]> send_playerlist_udp()
@@ -190,6 +169,10 @@ namespace 起源服务器查询
                 catch (System.Net.Sockets.SocketException)
                 {
                     udp.Close();
+                    Request_response = new Byte[0];
+                }
+                catch (System.ObjectDisposedException)
+                {
                     Request_response = new Byte[0];
                 }
             });
@@ -253,63 +236,82 @@ namespace 起源服务器查询
 
         private void player_list_update(Byte[] info)
         {
-            int i = 7;int j = 0;int k = 0;
-            k =  info[5];
-            while (k != 0)
+            try
             {
-                Byte[] name = new byte[info.Length];
-                while (info[i] != 0x00)
+                int i = 7; int j = 0; int k = 0;
+                k = info[5];
+                while (k != 0)
                 {
-                    name[j] = info[i];
-                    j++; i++;
+                    Byte[] name = new byte[info.Length];
+                    while (info[i] != 0x00)
+                    {
+                        name[j] = info[i];
+                        j++; i++;
+                    }
+                    player_list.Add(Encoding.UTF8.GetString(name));
+                    i = i + 10; j = 0;
+                    k--;
                 }
-                player_list.Add(Encoding.UTF8.GetString(name));
-                i = i +10;j = 0;
-                k--;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                player_list.Clear();
             }
         }
         private void info_update(Byte[] info)
         {
-            Byte[] name = new Byte[info.Length];
-            int i = 6;
-            int j = 0;
-            while (info[i] != 0x00)
+            try
             {
-                name[j] = info[i];
+                Byte[] name = new Byte[info.Length];
+                int i = 6;
+                int j = 0;
+                while (info[i] != 0x00)
+                {
+                    name[j] = info[i];
+                    i++;
+                    j++;
+                }
+                j = 0;
                 i++;
-                j++;
+                this.Name = Encoding.UTF8.GetString(name);
+                Byte[] map = new Byte[info.Length - i];
+                while (info[i] != 0x00)
+                {
+                    map[j] = info[i];
+                    i++;
+                    j++;
+                }
+                j = 0;
+                i++;
+                this.Map = Encoding.ASCII.GetString(map);
+                Byte[] game = new Byte[info.Length - i];
+                while (info[i] != 0x00)
+                {
+                    i++;
+                }
+                i++;
+                while (info[i] != 0x00)
+                {
+                    game[j] = info[i];
+                    i++;
+                    j++;
+                }
+                this.Game = Encoding.UTF8.GetString(game);
+                i = i + 3;
+                this.players = info[i];
+                i++;
+                this.maxplayers = info[i];
+                this.Players_maxplayers = this.players.ToString() + "/" + this.maxplayers.ToString();
             }
-            j = 0;
-            i++;
-            this.Name = Encoding.UTF8.GetString(name);
-            Byte[] map = new Byte[info.Length - i];
-            while (info[i] != 0x00)
+            catch (IndexOutOfRangeException)
             {
-                map[j] = info[i];
-                i++;
-                j++;
+                this.Game = "重试";
+                this.Name = "";
+                this.Map = "";
+                this.players = 0;
+                this.maxplayers = 0;
+                this.Players_maxplayers = "";
             }
-            j = 0;
-            i++;
-            this.Map = Encoding.ASCII.GetString(map);
-            Byte[] game = new Byte[info.Length - i];
-            while (info[i] != 0x00)
-            {
-                i++;
-            }
-            i++;
-            while (info[i] != 0x00)
-            {
-                game[j] = info[i];
-                i++;
-                j++;
-            }
-            this.Game = Encoding.UTF8.GetString(game);
-            i = i + 3;
-            this.players = info[i];
-            i++;
-            this.maxplayers = info[i];
-            this.Players_maxplayers = this.players.ToString() + "/" + this.maxplayers.ToString();
         }
     }   
 }
