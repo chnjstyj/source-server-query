@@ -49,19 +49,29 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <StackPanel Grid.Column="1" Orientation="Vertical">
-                <StackPanel Margin="20,20,20,20" >
-                    <TextBlock Name="game" TextWrapping="WrapWholeWords"/>
-                    <TextBlock Name="name" TextWrapping="WrapWholeWords"/>
-                    <TextBlock Name="map" TextWrapping="WrapWholeWords"/>
-                    <TextBlock Name="players" TextWrapping="WrapWholeWords"/>
-                </StackPanel>
-                <RelativePanel>
+            <ScrollViewer Grid.Column="1">
+                <StackPanel  Orientation="Vertical">
+                    <StackPanel Margin="20,20,20,20" >
+                        <TextBlock Name="game" TextWrapping="WrapWholeWords"/>
+                        <TextBlock Name="name" TextWrapping="WrapWholeWords"/>
+                        <TextBlock Name="map" TextWrapping="WrapWholeWords"/>
+                        <TextBlock Name="players" TextWrapping="WrapWholeWords"/>
+                    </StackPanel>
+                    <ListView Name="player_list">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    </ListView>
+                    <RelativePanel Margin="0,0,20,0">
                     <AppBarButton Name="add_button" Icon="Add" Label="添加" Visibility="Collapsed"
-                                  Click="add_button_Click" RelativePanel.AlignRightWithPanel="True"
-                                  Margin="0,0,20,0"/>
-                </RelativePanel>
+                                Click="add_button_Click" RelativePanel.AlignRightWithPanel="True"/>
+                        <AppBarButton RelativePanel.LeftOf="add_button" Label="刷新" Visibility="Collapsed"
+                                      Icon="Refresh" x:Name="refresh_button" Margin="0,0,10,0" Click="refresh_button_Click"/>
+                    </RelativePanel>
             </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>

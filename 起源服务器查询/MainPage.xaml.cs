@@ -55,20 +55,24 @@ namespace 起源服务器查询
             // animation.Configuration = new BasicConnectedAnimationConfiguration();
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+
+            //data_trans.server_list.Clear();
             servers.ItemsSource = data_trans.server_list;
-            data_trans.load_();
-            /*
+            //data_trans.load_();
+            
             foreach (server server in data_trans.server_list)
             {
                 await server.connect_server();   //这里要等待每个udp完成连接 否则每个list中的server都会同时占据一个udp端口
-            }*/
+            }
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
             this.RegisterBackgroundTask();
+
             if (e.Parameter is List<string>)
             {
                 List<string> info = (e.Parameter as List<string>);
@@ -111,7 +115,7 @@ namespace 起源服务器查询
         
         private void add_server_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(query_server_list),ip.Text);
+            this.Frame.Navigate(typeof(query_server_list),ip.Text, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private void fresh_Click(object sender, RoutedEventArgs e)
@@ -124,12 +128,19 @@ namespace 起源服务器查询
             foreach (server server in data_trans.server_list)
             {
                 await server.connect_server();
+                await server.update_player_list();
                 string game = server.Game.TrimEnd('\0');
                 string name = server.Name.TrimEnd('\0');
                 string map = server.Map.TrimEnd('\0');
                 string players = server.Players_maxplayers.TrimEnd('\0');
                 string tileId = server.Ip + server.Port;
-                var tileNotif = tile_content.update_info(game, name, map, players);
+                string player_list = "";
+                foreach (var player_name in server.Player_list)
+                {
+                    player_list += player_name.TrimEnd('\0') + "、";
+                }
+                player_list.TrimEnd('、');
+                var tileNotif = tile_content.update_info(game, name, map, players, player_list.TrimEnd('、'));
                 tileNotif.Tag = "info";
                 if (SecondaryTile.Exists(tileId))
                 {
@@ -183,13 +194,13 @@ namespace 起源服务器查询
             myFlyout.ShowAt(sender as UIElement, e.GetPosition(sender as UIElement));
         }
 
-        private void detialsItem_Click(object sender, RoutedEventArgs e)
+        private async void detialsItem_Click(object sender, RoutedEventArgs e)
         {
             if (servers.SelectedItem != null)
             {
                 ConnectedAnimation animation = null;
                 _storedItem = servers.SelectedItem as server;
-                _storedItem.update_player_list();    //
+                await _storedItem.update_player_list();    //
                 game_selected.Text = _storedItem.Game.TrimEnd('\0');
                 name_selected.Text = _storedItem.Name.TrimEnd('\0');
                 map_selected.Text = _storedItem.Map.TrimEnd('\0');
@@ -217,6 +228,7 @@ namespace 起源服务器查询
             if (servers.SelectedItem != null)
             {
                 var server = servers.SelectedItem as server;
+                await server.update_player_list();
                 string game = server.Game.TrimEnd('\0');
                 string name = server.Name.TrimEnd('\0');
                 string map = server.Map.TrimEnd('\0');
@@ -224,16 +236,24 @@ namespace 起源服务器查询
                 string tileId = server.Ip + server.Port;
                 string displayName = server.Ip + ":" + server.Port;
                 string arguments = server.Ip + ":" + server.Port;
+                string player_list = " ";
+                foreach (var player_name in server.Player_list)
+                {
+                    player_list += player_name.TrimEnd('\0') + "、";
+                }
                 SecondaryTile tile = new SecondaryTile(
                 tileId,
                 displayName,
                 arguments,
                 new Uri("ms-appx:///Assets/Square150x150Logo.scale-100.png"),
-                Windows.UI.StartScreen.TileSize.Default);
+                Windows.UI.StartScreen.TileSize.Default
+                );
                 tile.VisualElements.Wide310x150Logo = new Uri("ms-appx:///Assets/Wide310x150Logo.scale-100.png");
                 tile.VisualElements.ShowNameOnWide310x150Logo = true;
+                tile.VisualElements.Square310x310Logo = new Uri("ms-appx:///Assets/LargeTile.scale-100.png");
+                tile.VisualElements.ShowNameOnSquare310x310Logo = true;
                 bool fin = await tile.RequestCreateAsync();
-                var tileNotif = tile_content.update_info(game, name, map, players);
+                var tileNotif = tile_content.update_info(game, name, map, players,player_list.TrimEnd('、'));
                 tileNotif.Tag = "info";
                 if (SecondaryTile.Exists(tileId))
                 {
@@ -348,7 +368,6 @@ namespace 起源服务器查询
                 maxserverId++;
             }
         }
-        //在App.xaml.cs中调用 
         public async static void load_()
         {
             Realm realmDB;
@@ -359,7 +378,7 @@ namespace 起源服务器查询
                 server new_server = new server();
                 new_server.Ip = server_saved.Ip;
                 new_server.Port = server_saved.Port;
-                await new_server.connect_server();
+                //await new_server.connect_server();
                 server_list.Add(new_server);
             }
         }

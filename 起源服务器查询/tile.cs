@@ -10,7 +10,7 @@ namespace 起源服务器查询
 {
     class tile_content
     {
-        public static TileNotification update_info(string game, string name, string map, string players)
+        public static TileNotification update_info(string game, string name, string map, string players,string player_list)
         {
 
             // Construct the tile content
@@ -24,45 +24,45 @@ namespace 起源服务器查询
                         Content = new TileBindingContentAdaptive()
                         {
                             Children =
-                {
-                    new AdaptiveGroup()
-                    {
-                        Children =
-                        {
-                            new AdaptiveSubgroup()
                             {
-                                Children =
+                                new AdaptiveGroup()
                                 {
-                                    new AdaptiveText()
+                                    Children =
                                     {
-                                        Text = game,
-                                        HintWrap = true,
-                                        HintStyle = AdaptiveTextStyle.Base
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = name,
-                                        HintWrap = true,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = map,
-                                        HintWrap = false,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = players,
-                                        HintWrap = true,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                        new AdaptiveSubgroup()
+                                        {
+                                            Children =
+                                            {
+                                                new AdaptiveText()
+                                                {
+                                                    Text = game,
+                                                    HintWrap = false,
+                                                    HintStyle = AdaptiveTextStyle.Base
+                                                },
+                                                new AdaptiveText()
+                                                {
+                                                    Text = name,
+                                                    HintWrap = false,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                                },
+                                                new AdaptiveText()
+                                                {
+                                                    Text = map,
+                                                    HintWrap = false,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                                },
+                                                new AdaptiveText()
+                                                {
+                                                    Text = players,
+                                                    HintWrap = false,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                                }
+                                            }
+                                        }
                                     }
-                                }
-                            }
-                        }
-                    },
+                                },
 
-                }
+                            }
                         }
                     },
                     TileWide = new TileBinding()
@@ -71,44 +71,44 @@ namespace 起源服务器查询
                         Content = new TileBindingContentAdaptive()
                         {
                             Children =
-                {
-                    new AdaptiveGroup()
-                    {
-                        Children =
-                        {
-                            new AdaptiveSubgroup()
                             {
-                                Children =
+                                new AdaptiveGroup()
                                 {
-                                    new AdaptiveText()
+                                    Children =
                                     {
-                                        Text = game,
-                                        HintWrap = true,
-                                        HintStyle = AdaptiveTextStyle.Base
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = name,
-                                        HintWrap = true,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = map,
-                                        HintWrap = false,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = players,
-                                        HintWrap = true,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                        new AdaptiveSubgroup()
+                                        {
+                                            Children =
+                                            {
+                                                new AdaptiveText()
+                                                {
+                                                    Text = game,
+                                                    HintWrap = false,
+                                                    HintStyle = AdaptiveTextStyle.Base
+                                                },
+                                                new AdaptiveText()
+                                                {
+                                                    Text = name,
+                                                    HintWrap = false,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                                },
+                                                new AdaptiveText()
+                                                {
+                                                    Text = map,
+                                                    HintWrap = false,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                                },
+                                                new AdaptiveText()
+                                                {
+                                                    Text = players,
+                                                    HintWrap = false,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
-                        }
-                    }
-                }
                         }
                     },
                     TileLarge = new TileBinding()
@@ -117,44 +117,50 @@ namespace 起源服务器查询
                         Content = new TileBindingContentAdaptive()
                         {
                             Children =
-                {
-                    new AdaptiveGroup()
-                    {
-                        Children =
-                        {
-                            new AdaptiveSubgroup()
                             {
-                                Children =
+                                new AdaptiveGroup()
                                 {
-                                    new AdaptiveText()
+                                    Children =
                                     {
-                                        Text = game,
-                                        HintWrap = true,
-                                        HintStyle = AdaptiveTextStyle.Base
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = name,
-                                        HintWrap = true,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = map,
-                                        HintWrap = false,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                                    },
-                                    new AdaptiveText()
-                                    {
-                                        Text = players,
-                                        HintWrap = true,
-                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                        new AdaptiveSubgroup()
+                                        {
+                                            Children =
+                                            {
+                                                new AdaptiveText()
+                                                {
+                                                    Text = game,
+                                                    HintWrap = true,
+                                                    HintStyle = AdaptiveTextStyle.Base
+                                                },
+                                                new AdaptiveText()
+                                                {
+                                                    Text = name,
+                                                    HintWrap = true,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                                },
+                                                new AdaptiveText()
+                                                {
+                                                    Text = map,
+                                                    HintWrap = true,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                                },
+                                                new AdaptiveText()
+                                                {
+                                                    Text = players,
+                                                    HintWrap = true,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                                },
+                                                new AdaptiveText()
+                                                {
+                                                    Text = player_list,
+                                                    HintWrap = true,
+                                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
-                        }
-                    }
-                }
                         }
                     }
                 }

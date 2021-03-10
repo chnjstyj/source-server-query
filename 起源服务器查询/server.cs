@@ -137,7 +137,7 @@ namespace 起源服务器查询
             }
         }
 
-        public async void update_player_list()
+        public async Task update_player_list()
         {
             player_list.Clear();
             Byte[] Request_response = await send_playerlist_udp();
@@ -250,6 +250,7 @@ namespace 起源服务器查询
             }
             return new_request_info;
         }
+
         private void player_list_update(Byte[] info)
         {
             int i = 7;int j = 0;int k = 0;

@@ -26,9 +26,10 @@ namespace Background
                 port_str = port_str.TrimEnd('\0');
                 server server = new server(ip_str, port_str);
                 server.connect_server();
+                server.update_player_list();
                 if (server.Game != "超时！")
                 {
-                    var notifacation_info = update_info(server.Game.TrimEnd('\0'), server.Name.TrimEnd('\0'), server.Map.TrimEnd('\0'), server.Players_maxplayers.TrimEnd('\0'));
+                    var notifacation_info = update_info(server.Game.TrimEnd('\0'), server.Name.TrimEnd('\0'), server.Map.TrimEnd('\0'), server.Players_maxplayers.TrimEnd('\0'), server.Player_list.TrimEnd('、'));
                     //var notifacation_players = update_players();
                     //var notifacation_players1 = update_players1();
                     notifacation_info.Tag = "info";
@@ -42,7 +43,7 @@ namespace Background
                 }
                 else
                 {
-                    var notifacation_info = update_info("超时！", "", "", "");
+                    var notifacation_info = update_info("超时！", "", "", "","");
                     //var notifacation_players = update_players();
                     //var notifacation_players1 = update_players1();
                     notifacation_info.Tag = "info";
@@ -110,7 +111,7 @@ namespace Background
             return tileNotif;
         }
 
-        private TileNotification update_info(string game,string name,string map,string players)
+        private TileNotification update_info(string game,string name,string map,string players,string player_list)
         {
             var tileContent = new TileContent()
             {
@@ -134,13 +135,13 @@ namespace Background
                                     new AdaptiveText()
                                     {
                                         Text = game,
-                                        HintWrap = true,
+                                        HintWrap = false,
                                         HintStyle = AdaptiveTextStyle.Base
                                     },
                                     new AdaptiveText()
                                     {
                                         Text = name,
-                                        HintWrap = true,
+                                        HintWrap = false,
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle
                                     },
                                     new AdaptiveText()
@@ -152,7 +153,7 @@ namespace Background
                                     new AdaptiveText()
                                     {
                                         Text = players,
-                                        HintWrap = true,
+                                        HintWrap = false,
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle
                                     }
                                 }
@@ -181,13 +182,13 @@ namespace Background
                                     new AdaptiveText()
                                     {
                                         Text = game,
-                                        HintWrap = true,
+                                        HintWrap = false,
                                         HintStyle = AdaptiveTextStyle.Base
                                     },
                                     new AdaptiveText()
                                     {
                                         Text = name,
-                                        HintWrap = true,
+                                        HintWrap = false,
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle
                                     },
                                     new AdaptiveText()
@@ -199,7 +200,7 @@ namespace Background
                                     new AdaptiveText()
                                     {
                                         Text = players,
-                                        HintWrap = true,
+                                        HintWrap = false,
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle
                                     }
                                 }
@@ -239,12 +240,18 @@ namespace Background
                                     new AdaptiveText()
                                     {
                                         Text = map,
-                                        HintWrap = false,
+                                        HintWrap = true,
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle
                                     },
                                     new AdaptiveText()
                                     {
                                         Text = players,
+                                        HintWrap = true,
+                                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                    },
+                                    new AdaptiveText()
+                                    {
+                                        Text = player_list,
                                         HintWrap = true,
                                         HintStyle = AdaptiveTextStyle.CaptionSubtle
                                     }

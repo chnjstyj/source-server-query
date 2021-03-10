@@ -50,7 +50,8 @@ namespace 起源服务器查询
             {
                 Windows.System.Launcher.LaunchUriAsync(new Uri("steam://connect/" + ip_port));
             }
-            //data_trans.load_();
+            data_trans.load_();
+
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态
             if (rootFrame == null)
@@ -90,7 +91,7 @@ namespace 起源服务器查询
         /// </summary>
         private void ExtendAcrylicIntoTitleBar()
         {
-            //CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;

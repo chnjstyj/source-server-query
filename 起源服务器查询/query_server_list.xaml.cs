@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 
@@ -31,6 +32,7 @@ namespace 起源服务器查询
         string port;
         string server_query_http;
         const string steam_web_api = "http://api.steampowered.com/ISteamApps/GetServersAtAddress/v0001?addr=";
+        query_server.Server server;
         List<show_server> servers = new List<show_server>();
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -75,7 +77,8 @@ namespace 起源服务器查询
 
         private void back_to_main_Click(object sender, RoutedEventArgs e)
         {
-            TryGoBack();
+            this.Frame.Navigate(typeof(MainPage),null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            //TryGoBack();
         }
 
         private static bool TryGoBack()
@@ -92,17 +95,20 @@ namespace 起源服务器查询
         private async void server_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //game.Text += server_list.SelectedItem.GetType().ToString();
-            var server = (server_list.SelectedItem as query_server.Server);
+            server = (server_list.SelectedItem as query_server.Server);
             int port_index = server.addr.IndexOf(':');
             port = server.addr.Remove(0,port_index+1);
             server select_server = new server(ip,port);
             if (await select_server.connect_server())
             {
-                game.Text = select_server.Game;
-                name.Text = select_server.Name;
-                map.Text = select_server.Map;
-                players.Text = select_server.Players_maxplayers;
+                game.Text = select_server.Game.TrimEnd('\0');
+                name.Text = select_server.Name.TrimEnd('\0');
+                map.Text = select_server.Map.TrimEnd('\0');
+                players.Text = select_server.Players_maxplayers.TrimEnd('\0');
                 add_button.Visibility = Visibility.Visible;
+                refresh_button.Visibility = Visibility.Visible;
+                await select_server.update_player_list();
+                player_list.ItemsSource = select_server.Player_list.Select(x => x.TrimEnd('\0')).ToList<string>();
             }
             else
             {
@@ -120,6 +126,33 @@ namespace 起源服务器查询
             info.Add(ip);
             info.Add(port);
             this.Frame.Navigate(typeof(MainPage), info);
+        }
+
+        private async void refresh_button_Click(object sender, RoutedEventArgs e)
+        {
+            server = (server_list.SelectedItem as query_server.Server);
+            int port_index = server.addr.IndexOf(':');
+            port = server.addr.Remove(0, port_index + 1);
+            server select_server = new server(ip, port);
+            if (await select_server.connect_server())
+            {
+                game.Text = select_server.Game.TrimEnd('\0');
+                name.Text = select_server.Name.TrimEnd('\0');
+                map.Text = select_server.Map.TrimEnd('\0');
+                players.Text = select_server.Players_maxplayers.TrimEnd('\0');
+                add_button.Visibility = Visibility.Visible;
+                refresh_button.Visibility = Visibility.Visible;
+                await select_server.update_player_list();
+                player_list.ItemsSource = select_server.Player_list.Select(x => x.TrimEnd('\0')).ToList<string>();
+            }
+            else
+            {
+                game.Text = "连接失败";
+                name.Text = "";
+                map.Text = "";
+                players.Text = "";
+                add_button.Visibility = Visibility.Collapsed;
+            }
         }
     }
     class show_server
