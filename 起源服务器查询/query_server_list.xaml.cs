@@ -47,10 +47,17 @@ namespace 起源服务器查询
             {
                 server_query_http = steam_web_api + "127.0.0.1";
             }
-            
-            var query_result = await GetServers(server_query_http);
+            query_server.root_message query_result = new query_server.root_message();
 
-            server_list.ItemsSource = query_result.response.servers;
+            try
+            {
+                query_result = await GetServers(server_query_http);
+                server_list.ItemsSource = query_result.response.servers;
+            }
+            catch (Exception)
+            {
+
+            }
 
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             Window.Current.SetTitleBar(realTileBar);
@@ -125,7 +132,7 @@ namespace 起源服务器查询
             List<string> info = new List<string>();  //0: ip  1: port
             info.Add(ip);
             info.Add(port);
-            this.Frame.Navigate(typeof(MainPage), info);
+            this.Frame.Navigate(typeof(MainPage), info, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
         private async void refresh_button_Click(object sender, RoutedEventArgs e)
