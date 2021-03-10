@@ -43,6 +43,7 @@ namespace 起源服务器查询
             this.InitializeComponent();
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             Window.Current.SetTitleBar(realTileBar);
+            
             //data_trans.load_();
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -55,17 +56,11 @@ namespace 起源服务器查询
             // animation.Configuration = new BasicConnectedAnimationConfiguration();
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
             //data_trans.server_list.Clear();
-            servers.ItemsSource = data_trans.server_list;
-            //data_trans.load_();
             
-            foreach (server server in data_trans.server_list)
-            {
-                await server.connect_server();   //这里要等待每个udp完成连接 否则每个list中的server都会同时占据一个udp端口
-            }
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -85,6 +80,11 @@ namespace 起源服务器查询
                     data_trans.server_list.Add(new_server);
                     ip.Text = "";
                 }
+            }
+            servers.ItemsSource = data_trans.server_list;
+            foreach (server server in data_trans.server_list)
+            {
+                await server.connect_server();   //这里要等待每个udp完成连接 否则每个list中的server都会同时占据一个udp端口
             }
         }
 
