@@ -82,7 +82,9 @@ namespace 起源服务器查询
                     new_server.ip = IPAddress.Parse(info[0]);
                     new_server.port = info[1];
                     new_server.connect_server();
-                    data_trans.server_list.Add(new_server);
+                    //重复的不添加
+                    if (data_trans.server_list.Select( s =>  s.ip == new_server.ip && s.port == new_server.port).Count<bool>() == 0)
+                        data_trans.server_list.Add(new_server);
                     ip.Text = "";
                 }
             }
