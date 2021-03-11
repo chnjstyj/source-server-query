@@ -50,12 +50,12 @@ namespace 起源服务器查询
             {
                 Windows.System.Launcher.LaunchUriAsync(new Uri("steam://connect/" + ip_port));
             }
-            data_trans.load_();
 
             // 不要在窗口已包含内容时重复应用程序初始化，
             // 只需确保窗口处于活动状态
             if (rootFrame == null)
             {
+                data_trans.load_();
                 // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
 

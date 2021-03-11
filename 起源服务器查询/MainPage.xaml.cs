@@ -83,7 +83,7 @@ namespace 起源服务器查询
                     new_server.port = info[1];
                     new_server.connect_server();
                     //重复的不添加
-                    if (data_trans.server_list.Select( s =>  s.ip == new_server.ip && s.port == new_server.port).Count<bool>() == 0)
+                    if (data_trans.server_list.Any(s => s.Ip == new_server.Ip && s.Port == new_server.Port) == false)
                         data_trans.server_list.Add(new_server);
                     ip.Text = "";
                 }
@@ -382,7 +382,6 @@ namespace 起源服务器查询
                 server new_server = new server();
                 new_server.Ip = server_saved.Ip;
                 new_server.Port = server_saved.Port;
-                //await new_server.connect_server();
                 server_list.Add(new_server);
             }
         }
