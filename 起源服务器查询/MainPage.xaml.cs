@@ -374,6 +374,20 @@ namespace 起源服务器查询
         }
         public async static void load_()
         {
+            await Task.Run(() =>
+            {
+                Realm realmDB;
+                realmDB = Realm.GetInstance("server_list.realm");
+                var serverList = realmDB.All<server_saved>().ToList();
+                foreach (server_saved server_saved in serverList)
+                {
+                    server new_server = new server();
+                    new_server.Ip = server_saved.Ip;
+                    new_server.Port = server_saved.Port;
+                    server_list.Add(new_server);
+                }
+            });
+            /*
             Realm realmDB;
             realmDB = Realm.GetInstance("server_list.realm");
             var serverList = realmDB.All<server_saved>().ToList();
@@ -383,7 +397,7 @@ namespace 起源服务器查询
                 new_server.Ip = server_saved.Ip;
                 new_server.Port = server_saved.Port;
                 server_list.Add(new_server);
-            }
+            }*/
         }
     }
 }
