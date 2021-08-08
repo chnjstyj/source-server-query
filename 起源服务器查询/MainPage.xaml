@@ -5,6 +5,7 @@
     xmlns:local="using:起源服务器查询"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlChromeMediumLowAcrylicWindowMediumBrush}" 
     Loaded="Page_Loaded" Name="main">
@@ -134,7 +135,7 @@
                     </Button>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Vertical">
-                    <Border BorderThickness="0,0,0,2" BorderBrush="Black" Margin="10,0,10,10">
+                    <Border BorderThickness="0,0,0,0" BorderBrush="Black" Margin="10,0,10,10">
                         <ScrollViewer VerticalScrollMode="Enabled" 
                                       VerticalScrollBarVisibility="Auto">
                             <StackPanel x:Name="info_panel">
